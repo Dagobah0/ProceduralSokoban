@@ -1,0 +1,13 @@
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/bin/Debug/netcoreapp3.1/ProceduralSokoban
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/bin/Debug/netcoreapp3.1/ProceduralSokoban.deps.json
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/bin/Debug/netcoreapp3.1/ProceduralSokoban.runtimeconfig.json
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/bin/Debug/netcoreapp3.1/ProceduralSokoban.runtimeconfig.dev.json
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/bin/Debug/netcoreapp3.1/ProceduralSokoban.dll
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/bin/Debug/netcoreapp3.1/ProceduralSokoban.pdb
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/obj/Debug/netcoreapp3.1/ProceduralSokoban.csprojAssemblyReference.cache
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/obj/Debug/netcoreapp3.1/ProceduralSokoban.AssemblyInfoInputs.cache
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/obj/Debug/netcoreapp3.1/ProceduralSokoban.AssemblyInfo.cs
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/obj/Debug/netcoreapp3.1/ProceduralSokoban.csproj.CoreCompileInputs.cache
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/obj/Debug/netcoreapp3.1/ProceduralSokoban.dll
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/obj/Debug/netcoreapp3.1/ProceduralSokoban.pdb
+/home/hugosergeant/dev/dotnet/ProceduralSokoban/obj/Debug/netcoreapp3.1/ProceduralSokoban.genruntimeconfig.cache
