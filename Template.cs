@@ -24,6 +24,12 @@ public class Template {
         }
     }
 
+    public void clockwiseRotation(int n) {
+        for (int i = 0; i < n; i++) {
+            rotate();
+        }
+    }
+
     private void rotate() {
         int width = template.Length;
         int heigth = template[0].Length;

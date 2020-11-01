@@ -9,6 +9,9 @@ namespace ProceduralSokoban
             Level level = new Level();
             level.generate();
             level.print();
+            Console.WriteLine();
+            Console.Write(level.ToString());
+            //level.postProcess();        
         }
     }
 }
