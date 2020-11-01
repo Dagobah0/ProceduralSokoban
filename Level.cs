@@ -16,7 +16,7 @@ public class Level {
         for (int x = 0; x < width; x+= 3) {
             for (int y = 0; y < height; y += 3) {
                 Template randomTemplate = Templates.getRandom();
-                //randomTemplate.randomRotation();
+                randomTemplate.randomRotation();
                 placeTemplate(randomTemplate, x, y);
             }
         }

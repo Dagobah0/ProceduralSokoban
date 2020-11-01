@@ -1,54 +1,58 @@
 using System;
 public class Template {
-    private Cell[,] template;
+    private Cell[][] template;
 
-    public Template(Cell[,] content) {
-        this.template = content;
+    public Template(Cell[][] content) {
+        template = new Cell[content.Length][];
+
+        for (var x = 0; x < content.Length; x++)
+        {
+            var newer = new Cell[content[x].Length];
+            Array.Copy(content[x], newer, content[x].Length);
+            template[x] = newer;
+        }
     }
 
-    public Cell[,] GetTemp() { return template; }
-
     public Cell GetCell(int x, int y) {
-        return template[x,y];
+        return template[x][y];
     }
 
     public void randomRotation() {
         Random r = new Random();
-        /*for(int i = 0; i < r.Next(5); i++) {
+        for(int i = 0; i < r.Next(5); i++) {
             rotate();
-        }*/
-        this.rotate();
+        }
     }
 
     private void rotate() {
+        int width = template.Length;
+        int heigth = template[0].Length;
         // Array transposition
-        for(int x = 1; x < template.GetLength(0); x++) {
-            Cell tmpCell = template[x,0];
-            template[x,0] = template[0,x];
-            template[0,x] = tmpCell;
-        }
-        for(int y = 1; y < template.GetLength(1); y++) {
-            Cell tmpCell = template[template.GetLength(0)-1,y];
-            template[template.GetLength(0)-1,y] = template[y,template.GetLength(1)-1];
-            template[y,template.GetLength(1)-1] = tmpCell;
+        for(int y = 0; y < heigth; y++) {
+            for(int x = y; x < width; x++) {
+                Cell tmpCell = template[y][x];
+                template[y][x] = template[x][y];
+                template[x][y] = tmpCell;
+            }
         }
 
         // Reverse each row
-        for(int y = 0; y < template.GetLength(1); y++) {
-            for(int x = 0; x < template.GetLength(0) / 2; x++) {
-                Cell tmpCell = template[x,y];
-                template[x,y] = template[template.GetLength(0)-1-x,y];
-                template[template.GetLength(0)-1-x,y] = tmpCell;
+        for(int y = 0; y < heigth; y++) {
+            for(int x = 0; x < width/ 2; x++) {
+                Cell tmpCell = template[y][x];
+                template[y][x] = template[y][width-1-x];
+                template[y][width-1-x] = tmpCell;
             }
         }
+
     }
 
     public override string ToString()
     {
         string ret = "";
-        for (int y = 0; y < template.GetLength(1); y++) {
-            for (int x = 0; x < template.GetLength(0); x++) {
-                switch(template[x,y]) {
+        for (int x = 0; x < template.Length; x++) {
+            for (int y = 0; y < template[x].Length; y++) {
+                switch(template[x][y]) {
                     case Cell.Wall:
                         ret += "#";
                         break;
