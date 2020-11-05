@@ -5,17 +5,14 @@ public class Template {
     public Template(Cell[][] content) {
         template = new Cell[content.Length][];
 
-        for (var x = 0; x < content.Length; x++)
-        {
+        for (var x = 0; x < content.Length; x++) {
             var newer = new Cell[content[x].Length];
             Array.Copy(content[x], newer, content[x].Length);
             template[x] = newer;
         }
     }
 
-    public Cell GetCell(int x, int y) {
-        return template[x][y];
-    }
+    public Cell GetCell(int x, int y) { return template[x][y]; }
 
     public void randomRotation() {
         Random r = new Random();
@@ -51,27 +48,5 @@ public class Template {
             }
         }
 
-    }
-
-    public override string ToString()
-    {
-        string ret = "";
-        for (int x = 0; x < template.Length; x++) {
-            for (int y = 0; y < template[x].Length; y++) {
-                switch(template[x][y]) {
-                    case Cell.Wall:
-                        ret += "#";
-                        break;
-                    case Cell.Floor:
-                        ret += " ";
-                        break;
-                    default:
-                        ret += "N";
-                        break;
-                }
-            }
-            ret += "\n";
-        }
-        return ret;
     }
 }

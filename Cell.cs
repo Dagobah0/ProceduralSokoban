@@ -1,3 +1,3 @@
 public enum Cell {
-    Null, Wall, Floor
+    Null, Wall, Floor, FloorFilled, Crate, Goal, Player
 }

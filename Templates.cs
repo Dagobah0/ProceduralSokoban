@@ -161,8 +161,4 @@ public static class Templates {
       Cell[][] randTemplate = templates[r.Next(templates.Count)];
       return new Template(randTemplate);
     }
-
-    public static Template GetTemplate(int n) {
-        return new Template(templates[n]);
-    }
 }
