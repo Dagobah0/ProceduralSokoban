@@ -3,3 +3,4 @@ obj/
 .vscode/
 .vscode/
 ProceduralSokoban.csproj
+exports/*

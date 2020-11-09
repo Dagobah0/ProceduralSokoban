@@ -1,26 +1,23 @@
 using System;
 public class Level {
-
-    private const int ALLOWED_TRY = 10;
-
     private int floorCell;
     private int width;
     private int height;
     private Cell[,] map;
     private int cratesCount;
+    private Random rand;
 
-    public Level(int cratesCount) {
-        Random r = new Random();
-        //this.width = r.Next(1,10) * 3 + 2;
-        //height = width;
-        this.width = 3 * 3 + 2;
-        this.height = 3 * 3 + 2;
-        this.map = new Cell[width,height];
-        floorCell = 0;
-        this.cratesCount = cratesCount;
+    public Level(int crates = 2) {
+        rand = new Random();
+        cratesCount = crates;
+        width = rand.Next(2,4) * 3 + 2;
+        height = width;
     }
 
     public void generate() {
+        map = new Cell[width,height];
+        floorCell = 0;
+
         //Wall generation around level
         for (int x = 0; x < width; x++) {
             map[0,x] = Cell.Wall;
@@ -40,13 +37,12 @@ public class Level {
                 randomTemplate.randomRotation();
 
                 while(placementAllowed(randomTemplate,x,y) != true) {
-                    if (attempt == ALLOWED_TRY) {
-                        //TODO 
-                        // Regenerate map
-                        attempt = 0;
-                    }
                     randomTemplate = Templates.getRandom();
                     randomTemplate.randomRotation();
+                    if (attempt > 100) {
+                        Console.WriteLine("Max attemp reach, please generate again");
+                        return;
+                    }
                     attempt++;
                 }
                 
@@ -55,15 +51,14 @@ public class Level {
         }
     }
 
-    private void spawnCrates(int n) {
+    private bool spawnCrates(int n) {
 
-        Random r = new Random();
-        int x, y, surroundWall = 0;
+        int x, y, surroundWall, attempt = 0;
         for (int i = 0; i < n; i++) {
 
             do {
-                x = r.Next(2, width-2);
-                y = r.Next(2, height-2);
+                x = rand.Next(2, width-2);
+                y = rand.Next(2, height-2);
 
                 surroundWall = 0;
                 surroundWall += (map[x-1,y] == Cell.Wall) ? 1 : 0;
@@ -71,80 +66,65 @@ public class Level {
                 surroundWall += (map[x,y-1] == Cell.Wall) ? 1 : 0;
                 surroundWall += (map[x,y+1] == Cell.Wall) ? 1 : 0;
 
+                if (attempt >= floorCell) {
+                    Console.WriteLine("Can't generate crates ! Max attempt reach");
+                    return false;
+                }
+                attempt++;
+
             } while(map[x,y] != Cell.Floor || surroundWall >= 2);
 
             map[x,y] = Cell.Crate;
         }
+        return true;
     }
 
-    private void spawnPlayer() {
-        Random r = new Random();
-        int x, y = 0;
+    private bool spawnPlayer() {
+        int x, y, attempt = 0;
         do {
-            x = r.Next(1, width-1);
-            y = r.Next(1, height-1);
+            x = rand.Next(1, width-1);
+            y = rand.Next(1, height-1);
+
+            if (attempt >= floorCell) {
+                Console.WriteLine("Can't generate player ! Max attempt reach");
+                return false;
+            }
+            attempt++;
 
         } while(map[x,y] != Cell.Floor);
 
         map[x,y] = Cell.Player;
+        return true;
     }
 
-    private void spawnGoals(int n) {
-        Random r = new Random();
+    private bool spawnGoals(int n) {
         int x, y, attempt = 0;
-        bool isValidGoal = false;
         for (int i = 0; i < n; i++) {
-
+            bool isValidGoal = false;
             do {
-                x = r.Next(1, width-1);
-                y = r.Next(1, height-1);
+                x = rand.Next(1, width-1);
+                y = rand.Next(1, height-1);
 
-                if (map[x, y+1] == Cell.Floor)
+                if (map[x, y+1] == Cell.Floor && map[x, y+2] == Cell.Floor)
                 {
-                    if (map[x, y+2] == Cell.Floor)
-                    {
-                        isValidGoal = true;
-                    }
-                    else {
-                        isValidGoal = false;
-                    }
+                    isValidGoal = true;
                 }
-                else if (map[x, y-1] == Cell.Floor)
+                else if (map[x, y-1] == Cell.Floor && map[x, y-2] == Cell.Floor)
                 {
-                    if (map[x, y-2] == Cell.Floor)
-                    {
-                        isValidGoal = true;
-                    }
-                    else {
-                        isValidGoal = false;
-                    }
+                    isValidGoal = true;
                 }
-                else if (map[x+1, y] == Cell.Floor)
+                else if (map[x+1, y] == Cell.Floor && map[x+2, y] == Cell.Floor)
                 {
-                    if (map[x+2, y] == Cell.Floor)
-                    {
-                        isValidGoal = true;
-                    }
-                    else {
-                        isValidGoal = false;
-                    }
+                    isValidGoal = true;
                 }
-                else if (map[x-1, y] == Cell.Floor)
+                else if (map[x-1, y] == Cell.Floor && map[x-2, y] == Cell.Floor)
                 {
-                    if (map[x-2, y] == Cell.Floor)
-                    {
-                        isValidGoal = true;
-                    }
-                    else {
-                        isValidGoal = false;
-                    }
-                }
-                else {
-                    isValidGoal = false;
+                    isValidGoal = true;
                 }
 
-                if (attempt > 200) {
-                    break;
+                if (attempt >= floorCell) {
+                    Console.WriteLine("Can't generate goals ! Max attemp reach");
+                    return false;
                 }
                 attempt++;
 
@@ -152,16 +132,22 @@ public class Level {
 
             map[x,y] = Cell.Goal;
         }
+        return true;
     }
 
-    public void postProcess() {
+    public bool postProcess() {
+        bool complete = false;
         cleanDeadCell();
-        cleanUselessRoom();
+        complete |= cleanUselessRoom();
         cleanAloneWall();
         cleanDeadCell();
-        spawnCrates(cratesCount);
-        spawnGoals(cratesCount);
-        spawnPlayer();
+        //To optimize, before spawning crates mark all deadCell
+        //Spawn Crate only on non deacCell
+        //Need to improve deadCell algorithm too
+        complete &= spawnCrates(cratesCount);
+        complete &= spawnGoals(cratesCount);
+        complete &= spawnPlayer();
+        return complete;
     }
 
     private void cleanAloneWall() {
@@ -179,8 +165,7 @@ public class Level {
                     surroundFloor += (map[x+1,y-1] == Cell.Floor) ? 1 : 0;
 
                     if (surroundFloor > 6) {
-                        Random r = new Random();
-                        if (r.Next(0,100) < 30) {
+                        if (rand.Next(0,100) < 30) {
                             map[x,y] = Cell.Floor;
                         }
                     }
@@ -189,19 +174,23 @@ public class Level {
         }
     }
 
-    private void cleanUselessRoom() {
-        Random r = new Random();
+    private bool cleanUselessRoom() {
 
         int filledFloor = 0;
-        int x = r.Next(1,width-1);
-        int y = r.Next(1,height-1);
+        int attempt = 0;
+        int x = rand.Next(1,width-1);
+        int y = rand.Next(1,height-1);
 
         do
         {
             CellToWall(Cell.FloorFilled);
             while (map[x,y] != Cell.Floor) {
-                x = r.Next(1,width-1);
-                y = r.Next(1,height-1);
+                x = rand.Next(1,width-1);
+                y = rand.Next(1,height-1);
+                if (attempt > width*height) {
+                    return false;
+                }
+                attempt++;
             }
             filledFloor += floodFill(Cell.Floor, Cell.FloorFilled, x, y);
         } while (filledFloor < (int)floorCell * 0.5f);
@@ -216,6 +205,7 @@ public class Level {
                 }
             }
         }
+        return true;
     }
 
     private void CellToWall(Cell type) {

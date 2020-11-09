@@ -8,22 +8,30 @@ namespace ProceduralSokoban
     {
         static void Main(string[] args)
         {
-            Level level = new Level(3);
+            Level level = new Level();
+
             level.generate();
             level.print();
             Console.WriteLine();
+
             level.postProcess();
             level.print();
+
             //export();
         }
 
         public static void export() {
             for (int i = 0; i < 10; i++) {
-                Level level = new Level(3);
+                Level level = new Level();
                 level.generate();
-                level.postProcess();
+                bool complete = level.postProcess();
 
-                string path = "/Users/hugosergeant/CodeLab/dotnet/ProceduralSokoban/level" + i.ToString() + ".txt"; 
+                while(complete != true) {
+                    level.generate();
+                    complete = level.postProcess();
+                }
+
+                string path = "./exports/" + i.ToString() + ".txt"; 
                 try
                 {
                     // Create the file, or overwrite if the file exists.
