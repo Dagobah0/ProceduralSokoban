@@ -48,6 +48,8 @@ This is the list of template we use ([source](http://ianparberry.com/techreports
 
 ![template list](ressources/templates.png)
 
+A template is a level part corresponding to a 3x3 grid. To create the level, first we pick a random template in this list. Then we apply a random rotation and we place it in the grid. We repeat this step to fill all the grid. During the placement we use the cell around the template to make sure they are correctly side placed. When this step is finished, we begin the level optmizitation.
+
 ### Level optimization
 
 After the templates placement, differents issue in the generation can appears. Actually, the optomization part clean differents things :
@@ -55,7 +57,7 @@ After the templates placement, differents issue in the generation can appears. A
 - Clean useless rooms
 - Clean alone walls (wall surrounded by 7 floor or more)
 
-First we to replace dead cells by walls to avoid long one width corridor for example. Then we search the biggest room in the level, and we fill by walls all other rooms. Finally, we remove some alone walls to avoid cheese effect (a lot of alone walls inside the level).
+First we replace dead cells by walls to avoid long one width corridor for example. Then we search the biggest room in the level, and we fill by walls all other rooms. Finally, we remove some alone walls to avoid cheese effect (a lot of alone walls inside the level).
 
 ### Crates placement
 
