@@ -32,6 +32,10 @@ sudo apt-get update; \
 
 ```
 
+## Run
+
+Go to project folder and type `dotnet run`
+
 ## How does it works ?
 
 This is the differents steps of the algorithm :
